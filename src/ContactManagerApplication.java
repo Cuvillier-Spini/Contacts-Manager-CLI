@@ -90,16 +90,25 @@ public class ContactManagerApplication {
             String choice = scanner.nextLine();
 
             switch (choice) {
-                case "0" -> exit();
-                case "1" -> viewAllContacts();
-                case "2" -> addContact();
-                case "3" -> searchContacts();
-                case "4" -> removeContact();
-                default -> {
+                case "0":
+                    exit();
+                    break;
+                case "1":
+                    viewAllContacts();
+                    break;
+                case "2":
+                    addContact();
+                    break;
+                case "3":
+                    searchContacts();
+                    break;
+                case "4":
+                    removeContact();
+                    break;
+                default:
                     ContactManagerApplication.error("Unknown Option: " + choice);
                     showMenu();
                     return;
-                }
             }
             showMenu();
         }
