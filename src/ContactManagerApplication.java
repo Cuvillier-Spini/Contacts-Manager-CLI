@@ -22,9 +22,9 @@ public class ContactManagerApplication {
         System.out.println("ERROR: " + message);
     }
 
-    public static void error() {
-        error("An unknown error occured");
-    }
+//    public static void error() {
+//        error("An unknown error occured");
+//    }
 
     public static void welcome() {
         System.out.println("///////");
@@ -32,13 +32,13 @@ public class ContactManagerApplication {
         System.out.println("|  ^  |");
         System.out.println("|  U  |");
         System.out.println("|_____|");
-        System.out.println("");
+        System.out.println();
         System.out.println("To the contacts manager!");
-        System.out.println("");
+        System.out.println();
     }
 
     public static void showMenu() {
-        System.out.println("");
+        System.out.println();
         System.out.println("0 - Exit");
         System.out.println("1 - View Contacts");
         System.out.println("2 - Add A Contact");
@@ -69,6 +69,8 @@ public class ContactManagerApplication {
         System.out.println();
     }
 
+
+
     public static class CliContactsApplication {
         private final Scanner scanner;
         private final ContactsDao dao;
@@ -88,25 +90,16 @@ public class ContactManagerApplication {
             String choice = scanner.nextLine();
 
             switch (choice) {
-                case "0":
-                    exit();
-                    break;
-                case "1":
-                    viewAllContacts();
-                    break;
-                case "2":
-                    addContact();
-                    break;
-                case "3":
-                    searchContacts();
-                    break;
-                case "4":
-                    removeContact();
-                    break;
-                default:
+                case "0" -> exit();
+                case "1" -> viewAllContacts();
+                case "2" -> addContact();
+                case "3" -> searchContacts();
+                case "4" -> removeContact();
+                default -> {
                     ContactManagerApplication.error("Unknown Option: " + choice);
                     showMenu();
                     return;
+                }
             }
             showMenu();
         }
@@ -152,19 +145,16 @@ public class ContactManagerApplication {
             ContactManagerApplication.goodbye();
             System.exit(0);
         }
+
     }
 
     public interface ContactsDao {
         List<Contact> all();
-
         List<Contact> search(String searchTerm);
-
         void add(Contact contact);
-
         void remove(Contact contact);
     }
-
-        public class ContactsFromFile implements ContactsDao {
+        public static class ContactsFromFile implements ContactsDao {
         private static final String contactsFile = "contacts.txt";
 
         private Contact fromLine(String line) {
@@ -221,8 +211,6 @@ public class ContactManagerApplication {
         }
     }
 
-
-
     public static class FileHelper {
         public static List<String> slurp(String filepath) {
             Path path = Paths.get(filepath);
@@ -231,7 +219,7 @@ public class ContactManagerApplication {
             } catch (IOException e) {
                 System.out.printf("Error when trying to slurp %s: %s\n", filepath, e.getMessage());
                 System.exit(1);
-                return new ArrayList<>(); // we’ll never get here, but the compiler doesn’t know that
+                return new ArrayList<>();
             }
         }
 
