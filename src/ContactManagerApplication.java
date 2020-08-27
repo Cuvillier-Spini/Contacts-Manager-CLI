@@ -1,14 +1,27 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.ArrayList;
 
-public class TerminalDisplay {
+
+public class ContactManagerApplication {
     private static final String contactsFormat = "| %-10s | %10s |\n";
+
+    public static void main(String[] args) {
+        welcome();
+        showMenu();
+
+    }
 
     public static void error(String message) {
         System.err.println("An error occured!");
         System.out.println("ERROR: " + message);
     }
+
     public static void error() {
         error("An unknown error occured");
     }
@@ -56,7 +69,7 @@ public class TerminalDisplay {
         System.out.println();
     }
 
-    public class CliContactsApplication {
+    public static class CliContactsApplication {
         private final Scanner scanner;
         private final ContactsDao dao;
 
@@ -66,15 +79,15 @@ public class TerminalDisplay {
         }
 
         public void start() {
-            TerminalDisplay.welcome();
+            ContactManagerApplication.welcome();
             showMenu();
         }
 
         private void showMenu() {
-            TerminalDisplay.showMenu();
+            ContactManagerApplication.showMenu();
             String choice = scanner.nextLine();
 
-            switch(choice) {
+            switch (choice) {
                 case "0":
                     exit();
                     break;
@@ -91,7 +104,7 @@ public class TerminalDisplay {
                     removeContact();
                     break;
                 default:
-                    TerminalDisplay.error("Unknown Option: " + choice);
+                    ContactManagerApplication.error("Unknown Option: " + choice);
                     showMenu();
                     return;
             }
@@ -118,7 +131,7 @@ public class TerminalDisplay {
             System.out.print("Search Term? ");
             String searchTerm = scanner.nextLine();
             List<Contact> results = dao.search(searchTerm);
-            TerminalDisplay.showContacts(results);
+            ContactManagerApplication.showContacts(results);
         }
 
         private void addContact() {
@@ -132,23 +145,26 @@ public class TerminalDisplay {
         }
 
         private void viewAllContacts() {
-            TerminalDisplay.showContacts(dao.all());
+            ContactManagerApplication.showContacts(dao.all());
         }
 
         private void exit() {
-            TerminalDisplay.goodbye();
+            ContactManagerApplication.goodbye();
             System.exit(0);
         }
     }
 
     public interface ContactsDao {
         List<Contact> all();
+
         List<Contact> search(String searchTerm);
+
         void add(Contact contact);
+
         void remove(Contact contact);
     }
 
-    public class ContactsFromFile implements ContactsDao {
+        public class ContactsFromFile implements ContactsDao {
         private static final String contactsFile = "contacts.txt";
 
         private Contact fromLine(String line) {
@@ -204,6 +220,44 @@ public class TerminalDisplay {
             writeToFile(contacts);
         }
     }
-    public static void main(String[] args) {
+
+
+
+    public static class FileHelper {
+        public static List<String> slurp(String filepath) {
+            Path path = Paths.get(filepath);
+            try {
+                return Files.readAllLines(path);
+            } catch (IOException e) {
+                System.out.printf("Error when trying to slurp %s: %s\n", filepath, e.getMessage());
+                System.exit(1);
+                return new ArrayList<>(); // we’ll never get here, but the compiler doesn’t know that
+            }
+        }
+
+        public static void spit(String filename, List<String> contents) {
+            spit(filename, contents, false);
+        }
+        public static void spit(String filename, List<String> contents, boolean append) {
+            StandardOpenOption option = append ? StandardOpenOption.APPEND : StandardOpenOption.TRUNCATE_EXISTING;
+            Path path = Paths.get(filename);
+
+            if (! Files.exists(path)) {
+                try {
+                    Files.createDirectories(path);
+                    Files.createFile(path);
+                } catch (IOException e) {
+                    System.out.printf("Error creating file %s: %s\n", path, e.getMessage());
+                    System.exit(1);
+                }
+            }
+
+            try {
+                Files.write(path, contents, option);
+            } catch (IOException e) {
+                System.out.printf("Error writing contents to %s: %s\n", filename, e.getMessage());
+                System.exit(1);
+            }
+        }
     }
 }

@@ -31,4 +31,8 @@ public class Contact {
         Contact contact = (Contact) obj;
         return contact.name.equals(this.name) && contact.number.equals(this.number);
     }
+
+    public static void main(String[] args) {
+
+    }
 }
