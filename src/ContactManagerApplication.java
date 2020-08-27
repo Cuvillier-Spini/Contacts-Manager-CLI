@@ -22,9 +22,9 @@ public class ContactManagerApplication {
         System.out.println("ERROR: " + message);
     }
 
-//    public static void error() {
-//        error("An unknown error occured");
-//    }
+    public static void error() {
+        error("An unknown error occured");
+    }
 
     public static void welcome() {
         System.out.println("///////");
