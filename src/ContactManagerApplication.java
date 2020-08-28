@@ -12,7 +12,7 @@ public class ContactManagerApplication {
 
     public static void main(String[] args) {
 
-        phonebook = readList();
+//        phonebook = readList();
         int ch;
         char con = 'y';
         Scanner sc = new Scanner(System.in);
@@ -126,9 +126,7 @@ public class ContactManagerApplication {
         try {
             Path p = Paths.get("directory.txt");
             ArrayList<String> something = new ArrayList<>();
-            obj.forEach((k, v) -> {
-                something.add(String.format("%s:%s", v.getName(), v.getNumber()));
-            });
+            obj.forEach((k, v) -> something.add(String.format("%s:%s", v.getName(), v.getNumber())));
             Files.write(p, something);
 //            FileOutputStream fos=new FileOutputStream("directory.txt");
 //            ObjectOutputStream oos=new ObjectOutputStream(fos);
@@ -146,9 +144,7 @@ public class ContactManagerApplication {
         try {
             Path p = Paths.get("directory.txt");
             ArrayList<String> something = new ArrayList<>();
-            obj.forEach((k, v) -> {
-                something.remove(String.format("%s:%s", v.getName(), v.getNumber()));
-            });
+            obj.forEach((k, v) -> something.remove(String.format("%s:%s", v.getName(), v.getNumber())));
             Files.write(p, something);
 
 
