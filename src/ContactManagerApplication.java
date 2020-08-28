@@ -4,7 +4,7 @@ import java.util.Hashtable;
 import java.util.Scanner;
 
 public class ContactManagerApplication {
-    static Hashtable<String,contact> phonebook;
+    static Hashtable<String,Contact> phonebook;
     public static void main(String[] args){
 
         phonebook=readList(); //read phonebook
@@ -17,12 +17,23 @@ public class ContactManagerApplication {
             System.out.println("Enter your choice:");
             ch=sc.nextInt();
             switch (ch) {
-                case 1 -> viewAll();
-                case 2 -> addToPhoneBook();
-                case 3 -> searchByName();
-                case 4 -> deleteFromPhonebook();
-                case 5 -> System.exit(0);
-                default -> System.out.println("Invalid choice");
+                case 1:
+                    viewAll();
+                    break;
+                case 2:
+                    addToPhoneBook();
+                    break;
+                case 3:
+                    searchByName();
+                    break;
+                case 4:
+                    deleteFromPhonebook();
+                    break;
+                case 5:
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice");
+                    break;
             }
 
             try{
@@ -48,7 +59,7 @@ public class ContactManagerApplication {
     public static void viewAll(){
         if(phonebook!=null){
             for(Enumeration<String> e=phonebook.keys(); e.hasMoreElements();){
-                contact entry=phonebook.get(e.nextElement());
+                Contact entry=phonebook.get(e.nextElement());
                 entry.printInfo();
             }
 
@@ -66,7 +77,7 @@ public class ContactManagerApplication {
             String name=br.readLine();
             System.out.println("Enter phone:");
             String phone=br.readLine();
-            contact st=new contact(name,phone);
+            Contact st=new Contact(name,phone);
             phonebook.put(name,st); //add new entry to the phonebook
             writeIt(phonebook); //save the update phonebook
         }catch(IOException e) {
@@ -103,7 +114,7 @@ public class ContactManagerApplication {
                 BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
                 System.out.println("Search by name:");
                 String key=br.readLine();
-                contact cu=phonebook.get(key);
+                Contact cu=phonebook.get(key);
                 if(cu!=null)
                     cu.printInfo();
 
@@ -116,7 +127,7 @@ public class ContactManagerApplication {
     }
 
     //Write the Hashtable object representing the phonebook to the file
-    public static void writeIt(Hashtable<String,contact> obj){
+    public static void writeIt(Hashtable<String,Contact> obj){
         try{
             FileOutputStream fos=new FileOutputStream("directory.txt");
             ObjectOutputStream oos=new ObjectOutputStream(fos);
@@ -130,12 +141,12 @@ public class ContactManagerApplication {
     }
 
     //The readList method has code to read phonebook from the file
-    public static Hashtable<String,contact> readList(){
-        Hashtable<String,contact> phonebook=null;
+    public static Hashtable<String,Contact> readList(){
+        Hashtable<String,Contact> phonebook=null;
         try{
             FileInputStream fis=new FileInputStream("directory.txt");
             ObjectInputStream ois=new ObjectInputStream(fis);
-            phonebook=(Hashtable<String,contact>)ois.readObject();
+            phonebook=(Hashtable<String,Contact>)ois.readObject();
             ois.close();
 
         }catch(Exception ie) {
