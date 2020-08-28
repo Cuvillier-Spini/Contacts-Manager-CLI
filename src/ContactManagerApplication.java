@@ -13,15 +13,15 @@ public class ContactManagerApplication {
     public static void main(String[] args) {
 
         phonebook = readList();
-        int ch;
+        int choice;
         char con = 'y';
         Scanner sc = new Scanner(System.in);
 
         while (con == 'y') {
             showMenu();
             System.out.println("Enter your choice:");
-            ch = sc.nextInt();
-            switch (ch) {
+            choice = sc.nextInt();
+            switch (choice) {
                 case 1:
                     viewAll();
                     break;
@@ -128,46 +128,23 @@ public class ContactManagerApplication {
             ArrayList<String> something = new ArrayList<>();
             obj.forEach((k, v) -> something.add(String.format("%s:%s", v.getName(), v.getNumber())));
             Files.write(p, something);
-//            FileOutputStream fos=new FileOutputStream("directory.txt");
-//            ObjectOutputStream oos=new ObjectOutputStream(fos);
-//            oos.writeObject(obj);
-//            oos.flush();
-//            oos.close();
         } catch (IOException ie) {
             ie.printStackTrace();
         }
     }
 
-//        public static Hashtable<String, Contact> readList() {
-////    public static Hashtable<String, Contact> readList(Hashtable<String, Contact> obj) {
-//        Hashtable<String, Contact> phonebook = null;
-//        try {
-////            Path p = Paths.get("directory.txt");
-////            ArrayList<String> something = new ArrayList<>();
-////            obj.forEach((k, v) -> something.remove(String.format("%s:%s", v.getName(), v.getNumber())));
-////            Files.write(p, something);
-//
-//
-//            FileInputStream fis=new FileInputStream("directory.txt");
-//            ObjectInputStream ois=new ObjectInputStream(fis);
-//            phonebook=(Hashtable<String,Contact>)ois.readObject();
-//            ois.close();
-//
-//        } catch (Exception ie) {
-//            ie.printStackTrace();
-//        }
-//        return phonebook;
-
     public static Hashtable<String, Contact> readList() {
+//    public static Hashtable<String, Contact> readList(Hashtable<String, Contact> obj) {
         Hashtable<String, Contact> phonebook = null;
         try {
-            FileInputStream fis = new FileInputStream("directory.txt");
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            phonebook = (Hashtable<String, Contact>) ois.readObject();
-            ois.close();
+            Path p = Paths.get("directory.txt");
+            ArrayList<String> something = new ArrayList<>();
+//            obj.forEach((k, v) -> something.remove(String.format("%s:%s", v.getName(), v.getNumber())));
+            Files.write(p, something);
         } catch (Exception ie) {
             ie.printStackTrace();
         }
         return phonebook;
     }
 }
+
