@@ -1,6 +1,8 @@
 public class Contact {
     private String name;
     private String number;
+    private String Name;
+    private String Phone;
 
     public Contact(String name, String number) {
         this.name = name;
@@ -23,16 +25,7 @@ public class Contact {
         this.number = number;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof Contact)) {
-            return false;
-        }
-        Contact contact = (Contact) obj;
-        return contact.name.equals(this.name) && contact.number.equals(this.number);
-    }
-
-    public static void main(String[] args) {
-
+    public void printInfo() {
+        System.out.println("Name:" + Name + ", Phone:" + Phone);
     }
 }
