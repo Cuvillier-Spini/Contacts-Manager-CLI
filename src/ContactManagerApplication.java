@@ -12,7 +12,7 @@ public class ContactManagerApplication {
 
     public static void main(String[] args) {
 
-//        phonebook = readList();
+        phonebook = readList();
         int ch;
         char con = 'y';
         Scanner sc = new Scanner(System.in);
@@ -138,21 +138,33 @@ public class ContactManagerApplication {
         }
     }
 
-    //    public static Hashtable<String, Contact> readList() {
-    public static Hashtable<String, Contact> readList(Hashtable<String, Contact> obj) {
-       // Hashtable<String, Contact> phonebook = null;
-        try {
-            Path p = Paths.get("directory.txt");
-            ArrayList<String> something = new ArrayList<>();
-            obj.forEach((k, v) -> something.remove(String.format("%s:%s", v.getName(), v.getNumber())));
-            Files.write(p, something);
-
-
+//        public static Hashtable<String, Contact> readList() {
+////    public static Hashtable<String, Contact> readList(Hashtable<String, Contact> obj) {
+//        Hashtable<String, Contact> phonebook = null;
+//        try {
+////            Path p = Paths.get("directory.txt");
+////            ArrayList<String> something = new ArrayList<>();
+////            obj.forEach((k, v) -> something.remove(String.format("%s:%s", v.getName(), v.getNumber())));
+////            Files.write(p, something);
+//
+//
 //            FileInputStream fis=new FileInputStream("directory.txt");
 //            ObjectInputStream ois=new ObjectInputStream(fis);
 //            phonebook=(Hashtable<String,Contact>)ois.readObject();
 //            ois.close();
+//
+//        } catch (Exception ie) {
+//            ie.printStackTrace();
+//        }
+//        return phonebook;
 
+    public static Hashtable<String, Contact> readList() {
+        Hashtable<String, Contact> phonebook = null;
+        try {
+            FileInputStream fis = new FileInputStream("directory.txt");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            phonebook = (Hashtable<String, Contact>) ois.readObject();
+            ois.close();
         } catch (Exception ie) {
             ie.printStackTrace();
         }
