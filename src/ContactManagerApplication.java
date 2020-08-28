@@ -140,7 +140,7 @@ public class ContactManagerApplication {
 
     //    public static Hashtable<String, Contact> readList() {
     public static Hashtable<String, Contact> readList(Hashtable<String, Contact> obj) {
-        Hashtable<String, Contact> phonebook = null;
+       // Hashtable<String, Contact> phonebook = null;
         try {
             Path p = Paths.get("directory.txt");
             ArrayList<String> something = new ArrayList<>();
