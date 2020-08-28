@@ -1,4 +1,5 @@
-public class Contact {
+
+public class Contact implements java.io.Serializable{
     private String name;
     private String number;
     private String Name;

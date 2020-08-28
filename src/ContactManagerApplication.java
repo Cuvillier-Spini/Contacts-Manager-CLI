@@ -1,4 +1,8 @@
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Scanner;
@@ -7,13 +11,13 @@ public class ContactManagerApplication {
     static Hashtable<String,Contact> phonebook;
     public static void main(String[] args){
 
-        phonebook=readList(); //read phonebook
+        phonebook=readList();
         int ch;
         char con='y';
-        Scanner sc=new Scanner(System.in); //create scanner object to receive choice input
+        Scanner sc=new Scanner(System.in);
 
         while(con=='y'){
-            showMenu(); //show menu
+            showMenu();
             System.out.println("Enter your choice:");
             ch=sc.nextInt();
             switch (ch) {
@@ -37,7 +41,6 @@ public class ContactManagerApplication {
             }
 
             try{
-                //prompt for continuing the program
                 InputStreamReader isr=new InputStreamReader(System.in);
                 System.out.println("Press y to continue:");
                 con=(char)isr.read();
@@ -46,7 +49,7 @@ public class ContactManagerApplication {
             }
         }
     }
-    //This method display options menu
+
     public static void showMenu() {
         System.out.println("1. View all phonebook entries");
         System.out.println("2. Add to phonebook");
@@ -55,7 +58,7 @@ public class ContactManagerApplication {
         System.out.println("5. Exit");
     }
 
-    //The viewAll method displays all entries in the phonebook
+
     public static void viewAll(){
         if(phonebook!=null){
             for(Enumeration<String> e=phonebook.keys(); e.hasMoreElements();){
@@ -67,9 +70,7 @@ public class ContactManagerApplication {
 
     }
 
-    //The addToPhoneBook method is able to add each entry to the phonebook
     public static void addToPhoneBook(){
-        //If the phonebook null, allocate memory for it so it is ready to get the new item
         if(phonebook==null) phonebook= new Hashtable<>();
         try{
             BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
@@ -78,24 +79,22 @@ public class ContactManagerApplication {
             System.out.println("Enter phone:");
             String phone=br.readLine();
             Contact st=new Contact(name,phone);
-            phonebook.put(name,st); //add new entry to the phonebook
-            writeIt(phonebook); //save the update phonebook
+            phonebook.put(name,st);
+            writeIt(phonebook);
         }catch(IOException e) {
             e.printStackTrace();
         }
     }
 
-    //The deleteFromPhonebook method is able to delete an entry when the name
-    //is correctly input
     public static void deleteFromPhonebook(){
         if(phonebook!=null){
-            int si=phonebook.size(); //number of entries in the phonebook before an entry is removed
+            int si=phonebook.size();
             try{
                 BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
                 System.out.println("Name:");
                 String key=br.readLine();
-                phonebook.remove(key); //remove the contact
-                if(phonebook.size()<si){ //removing is successful
+                phonebook.remove(key);
+                if(phonebook.size()<si){
                     writeIt(phonebook);
                     System.out.println("The entry has been deleted.");
                 }
@@ -107,7 +106,6 @@ public class ContactManagerApplication {
         }
     }
 
-    //The searchByName method has code to find a phonebook entry by name in the list
     public static void searchByName(){
         if(phonebook!=null){
             try{
@@ -126,21 +124,25 @@ public class ContactManagerApplication {
         }
     }
 
-    //Write the Hashtable object representing the phonebook to the file
     public static void writeIt(Hashtable<String,Contact> obj){
         try{
-            FileOutputStream fos=new FileOutputStream("directory.txt");
-            ObjectOutputStream oos=new ObjectOutputStream(fos);
-            oos.writeObject(obj);
-            oos.flush();
-            oos.close();
+            Path p = Paths.get("directory.txt");
+            ArrayList<String> something = new ArrayList<>();
+            obj.forEach((k,v)->{
+                something.add(String.format("%s:%s",v.getName(),v.getNumber()));
+            });
+            Files.write(p,something);
+//            FileOutputStream fos=new FileOutputStream("directory.txt");
+//            ObjectOutputStream oos=new ObjectOutputStream(fos);
+//            oos.writeObject(obj);
+//            oos.flush();
+//            oos.close();
         }catch(IOException ie) {
             ie.printStackTrace();
         }
 
     }
 
-    //The readList method has code to read phonebook from the file
     public static Hashtable<String,Contact> readList(){
         Hashtable<String,Contact> phonebook=null;
         try{
