@@ -51,11 +51,11 @@ public class ContactManagerApplication {
     }
 
     public static void showMenu() {
-        System.out.println("1. View all phonebook entries");
-        System.out.println("2. Add to phonebook");
-        System.out.println("3. Find an entry");
-        System.out.println("4. Remove from phonebook");
-        System.out.println("5. Exit");
+        System.out.println("1. View contacts.");
+        System.out.println("2. Add a new contact.");
+        System.out.println("3. Search a contact by name.");
+        System.out.println("4. Delete an existing contact.");
+        System.out.println("5. Exit.");
     }
 
 
@@ -65,9 +65,7 @@ public class ContactManagerApplication {
                 Contact entry=phonebook.get(e.nextElement());
                 entry.printInfo();
             }
-
         }
-
     }
 
     public static void addToPhoneBook(){
@@ -76,33 +74,13 @@ public class ContactManagerApplication {
             BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
             System.out.println("Enter name:");
             String name=br.readLine();
-            System.out.println("Enter phone:");
+            System.out.println("Enter phone number:");
             String phone=br.readLine();
             Contact st=new Contact(name,phone);
             phonebook.put(name,st);
             writeIt(phonebook);
         }catch(IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    public static void deleteFromPhonebook(){
-        if(phonebook!=null){
-            int si=phonebook.size();
-            try{
-                BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
-                System.out.println("Name:");
-                String key=br.readLine();
-                phonebook.remove(key);
-                if(phonebook.size()<si){
-                    writeIt(phonebook);
-                    System.out.println("The entry has been deleted.");
-                }
-                else
-                    System.out.println("Wrong name");
-            }catch(IOException ie) {
-                ie.printStackTrace();
-            }
         }
     }
 
@@ -118,6 +96,26 @@ public class ContactManagerApplication {
 
                 else
                     System.out.println("Not found");
+            }catch(IOException ie) {
+                ie.printStackTrace();
+            }
+        }
+    }
+
+    public static void deleteFromPhonebook(){
+        if(phonebook!=null){
+            int si=phonebook.size();
+            try{
+                BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+                System.out.println("Name:");
+                String key=br.readLine();
+                phonebook.remove(key);
+                if(phonebook.size()<si){
+                    writeIt(phonebook);
+                    System.out.println("The contact has been deleted.");
+                }
+                else
+                    System.out.println("Wrong name");
             }catch(IOException ie) {
                 ie.printStackTrace();
             }
@@ -140,7 +138,6 @@ public class ContactManagerApplication {
         }catch(IOException ie) {
             ie.printStackTrace();
         }
-
     }
 
     public static Hashtable<String,Contact> readList(){
